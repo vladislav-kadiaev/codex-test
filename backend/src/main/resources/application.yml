@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/twitchstats
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+twitch:
+  client-id: \${TWITCH_CLIENT_ID:}
+  access-token: \${TWITCH_ACCESS_TOKEN:}
