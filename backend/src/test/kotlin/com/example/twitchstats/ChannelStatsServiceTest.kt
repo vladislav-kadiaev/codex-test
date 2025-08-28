@@ -41,4 +41,20 @@ class ChannelStatsServiceTest {
         val stat = service.refreshStats("somechannel")
         assertEquals(123, stat.viewers)
     }
+
+    @Test
+    fun `getMonthlyStats returns stats`() {
+        val channel = Channel(id = 1, name = "somechannel")
+        val stat = ViewStat(id = 1, channel = channel, timestamp = Instant.now(), viewers = 10)
+        given(channelRepository.findByName("somechannel")).willReturn(Optional.of(channel))
+        given(
+            viewStatRepository.findByChannelAndTimestampAfterOrderByTimestampDesc(
+                Mockito.eq(channel),
+                Mockito.any(Instant::class.java)
+            )
+        ).willReturn(listOf(stat))
+
+        val stats = service.getMonthlyStats("somechannel")
+        assertEquals(listOf(stat), stats)
+    }
 }
