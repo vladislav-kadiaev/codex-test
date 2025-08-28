@@ -18,7 +18,7 @@ const stats = ref([])
 async function refresh() {
   if (!channel.value) return
   await axios.post(`/api/channels/${channel.value}/refresh`)
-  const res = await axios.get(`/api/channels/${channel.value}/stats`)
+  const res = await axios.get(`/api/channels/${channel.value}/stats/month`)
   stats.value = res.data
 }
 </script>

@@ -7,6 +7,7 @@ import com.example.twitchstats.repository.ViewStatRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @Service
 class ChannelStatsService(
@@ -26,5 +27,13 @@ class ChannelStatsService(
     fun getStats(channelName: String): List<ViewStat> {
         val channel = channelRepository.findByName(channelName)
         return channel.map { viewStatRepository.findByChannelOrderByTimestampDesc(it) }.orElse(emptyList())
+    }
+
+    fun getMonthlyStats(channelName: String): List<ViewStat> {
+        val channel = channelRepository.findByName(channelName)
+        val from = Instant.now().minus(30, ChronoUnit.DAYS)
+        return channel.map {
+            viewStatRepository.findByChannelAndTimestampAfterOrderByTimestampDesc(it, from)
+        }.orElse(emptyList())
     }
 }

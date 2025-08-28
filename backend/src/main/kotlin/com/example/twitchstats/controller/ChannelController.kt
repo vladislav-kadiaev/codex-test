@@ -13,4 +13,7 @@ class ChannelController(private val service: ChannelStatsService) {
 
     @GetMapping("/{name}/stats")
     fun stats(@PathVariable name: String): List<ViewStat> = service.getStats(name)
+
+    @GetMapping("/{name}/stats/month")
+    fun monthlyStats(@PathVariable name: String): List<ViewStat> = service.getMonthlyStats(name)
 }
